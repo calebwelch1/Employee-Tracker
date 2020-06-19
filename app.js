@@ -7,7 +7,7 @@ const dotenv = require("dotenv");
 const PORT = 8080;
 const cTable = require("console.table");
 // call once somewhere in the beginning of the app
-//takes an object use this later to print out employee summary
+//takes an object use this later to print out employees
 console.table([
   {
     name: "foo",
@@ -39,10 +39,26 @@ app.listen(PORT, (x) => {
 // Inquirer
 inquirer
   .prompt([
-    /* Pass your questions in here */
+    {
+      type: "list",
+      name: "start",
+      message: "What do you want to do?",
+      choices: [
+        "View Employees",
+        "Add An Employee",
+        "Remove An Employee",
+        "Update An Employee",
+        new inquirer.Separator(),
+        "Configure Titles",
+        "Configure Departments",
+      ],
+    },
   ])
   .then((answers) => {
-    // Use user feedback for... whatever!!
+    // view all employees
+    if (answers.start == "View Employees") {
+      console.table();
+    }
   })
   .catch((error) => {
     if (error.isTtyError) {
