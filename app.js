@@ -6,7 +6,6 @@ const app = express();
 require("dotenv").config();
 const PORT = 8080;
 const cTable = require("console.table");
-const { start } = require("repl");
 // call once somewhere in the beginning of the app
 //takes an object use this later to print out employees
 // console.table([
@@ -36,6 +35,31 @@ const mySqlConnect = mysql.createConnection({
   database: process.env.DB_NAME,
 });
 // this just creates the connection to the server so that it is open while the program is running
+// TODO: add function to add departments/titles/managers to list
+let departmentsArr = [
+  "Engineering",
+  "Sales",
+  "Human Resources",
+  "Marketing",
+  "Security",
+  "Support",
+  "Management",
+];
+let titlesArr = [
+  "Engineer",
+  "Sales Person",
+  "Market Researcher",
+  "Security Guard",
+  "Personnel",
+  "Manager",
+];
+let managersArr = [
+  "Dave Cat",
+  "Kelly Kapoor",
+  "Andrea Gourmand",
+  "Xernona Petri",
+  "Cintra Goss",
+];
 mySqlConnect.connect((err) => {
   if (err) {
     throw err;
@@ -117,4 +141,48 @@ let viewEmployees = () => {
     );
     // console.log(res);
   });
+};
+
+let addEmployees = () => {
+  inquirer
+    .prompt([
+      {
+        name: "addEmployee",
+        type: "input",
+        message:
+          "Enter employee first name, last name, title, department, salary and manager seperated by commas",
+        // validate: (value)=>{
+        //     if
+      },
+    ])
+    .then((answer) => {
+      console.log(answer);
+    });
+  // let query = "INSERT ?"
+};
+
+let configDepartments = () => {
+  inquirer
+    .prompt([
+      {
+        name: "addDepartment",
+        type: "input",
+        message:
+          "Enter the name of a new Department. (Type menu to return to main menu. Type clear to clear departments)",
+      },
+    ])
+    .then((answer) => {
+      if (answer.addDepartment == "menu") {
+        beginEmployeeTracker();
+      } else if (answer.addDepartment == "clear") {
+        departmentsArr = [];
+        console.log("Departments Cleared");
+        configDepartments();
+      } else {
+        departmentsArr.push(answer.addDepartment);
+        console.log(`Departments: ${departmentsArr}`);
+        configDepartments();
+      }
+    });
+  //   beginEmployeeTracker();
 };
