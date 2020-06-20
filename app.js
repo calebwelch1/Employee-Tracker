@@ -89,6 +89,7 @@ let beginEmployeeTracker = () => {
           "Configure Titles",
           "Configure Departments",
           "Configure Managers (Does not alter table data)",
+          new inquirer.Separator(),
         ],
       },
     ])
@@ -106,7 +107,9 @@ let beginEmployeeTracker = () => {
         configTitles();
       } else if (answers.start == "Configure Departments") {
         configDepartments();
-      } else if (answers.start == "Configure Managers") {
+      } else if (
+        answers.start == "Configure Managers (Does not alter table data)"
+      ) {
         configManagers();
       }
     })
@@ -211,6 +214,31 @@ let configTitles = () => {
         titlesArr.push(answer.addTitle);
         console.log(`Titles: ${titlesArr}`);
         configTitles();
+      }
+    });
+};
+
+let configManagers = () => {
+  inquirer
+    .prompt([
+      {
+        name: "addManager",
+        type: "input",
+        message:
+          "Enter the name of a new Manager. (Type menu to return to main menu. Type clear to clear departments)",
+      },
+    ])
+    .then((answer) => {
+      if (answer.addManager == "menu") {
+        beginEmployeeTracker();
+      } else if (answer.addManager == "clear") {
+        managersArr = [];
+        console.log("Managers Cleared");
+        configManagers();
+      } else {
+        managersArr.push(answer.addManager);
+        console.log(`Titles: ${managersArr}`);
+        configManagers();
       }
     });
 };
