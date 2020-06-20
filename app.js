@@ -9,24 +9,24 @@ const cTable = require("console.table");
 const { start } = require("repl");
 // call once somewhere in the beginning of the app
 //takes an object use this later to print out employees
-console.table([
-  {
-    name: "foo",
-    age: 10,
-  },
-  {
-    name: "bar",
-    age: 20,
-  },
-]);
+// console.table([
+//   {
+//     name: "foo",
+//     age: 10,
+//   },
+//   {
+//     name: "bar",
+//     age: 20,
+//   },
+// ]);
 // prints
 // name  age
 // ----  ---
 // foo   10
 // bar   20
-app.listen(PORT, (x) => {
-  console.log(`Listening on Port${PORT}`);
-});
+// app.listen(PORT, (x) => {
+//   console.log(`Listening on Port${PORT}`);
+// });
 // mysql connection
 const mySqlConnect = mysql.createConnection({
   host: process.env.DB_HOST,
@@ -35,11 +35,17 @@ const mySqlConnect = mysql.createConnection({
   password: process.env.DB_PASS,
   database: process.env.DB_NAME,
 });
-
+// this just creates the connection to the server so that it is open while the program is running
 mySqlConnect.connect((err) => {
   if (err) {
     throw err;
   }
+  console.table([
+    {
+      Employee: "",
+      Tracker: "",
+    },
+  ]);
   beginEmployeeTracker();
 });
 // Inquirer
@@ -88,3 +94,27 @@ let beginEmployeeTracker = () => {
 //TODO: write view employees, add / remove / update
 //TODO: write config Titles, configDepartments
 //TODO: proper view
+
+let viewEmployees = () => {
+  beginEmployeeTracker();
+  let query = "SELECT * FROM employees_db.employees";
+  mySqlConnect.query(query, (err, res) => {
+    if (err) {
+      throw err;
+    }
+    // something like magic getting this table to work. yet so simple
+    console.table(
+      [
+        "id",
+        "first_name",
+        "last_name",
+        "title",
+        "department",
+        "salary",
+        "manager",
+      ],
+      res
+    );
+    // console.log(res);
+  });
+};
