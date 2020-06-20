@@ -122,8 +122,7 @@ let beginEmployeeTracker = () => {
     });
 };
 //TODO: write view employees, add / remove / update
-//TODO: write config Titles, configDepartments
-//TODO: proper view
+//TODO: Split Into Multiple Tables
 
 let viewEmployees = () => {
   beginEmployeeTracker();
@@ -153,16 +152,61 @@ let addEmployees = () => {
   inquirer
     .prompt([
       {
-        name: "addEmployee",
+        name: "addEFname",
         type: "input",
-        message:
-          "Enter employee first name, last name, title, department, salary and manager seperated by commas",
-        // validate: (value)=>{
-        //     if
+        message: "Enter employee first name",
+      },
+      {
+        name: "addELname",
+        type: "input",
+        message: "Enter employee last name",
+      },
+      {
+        name: "addETitle",
+        type: "list",
+        message: "Choose a title",
+        choices: titlesArr,
+      },
+      {
+        name: "addEDepartment",
+        type: "list",
+        message: "Choose a department",
+        choices: departmentsArr,
+      },
+      {
+        name: "addESalary",
+        type: "input",
+        message: "Input employee Salary",
+      },
+      {
+        name: "addEManager",
+        type: "list",
+        message: "Choose a manager for the employee",
+        choices: managersArr,
       },
     ])
     .then((answer) => {
-      console.log(answer);
+      let salary = parseInt(answer.addESalary);
+      let query = `INSERT INTO employees (first_name, last_name, title, department, salary, manager) VALUES (${answer.addEFname}, ${answer.addELname}, ${answer.addETitle}, ${answer.addDepartment}, ${salary}, ${answer.addEManager})`;
+      mySqlConnect.query(
+        query,
+        // can't get ? to work... maybe i need many ?'s
+        // [
+        //   answer.addEFname,
+        //   answer.addELname,
+        //   answer.addETitle,
+        //   answer.addEDepartment,
+        //   answer.addESalary,
+        //   answer.addEManager,
+        // ],
+        (err) => {
+          if (err) {
+            throw err;
+          }
+        }
+      );
+      //   console.log(answer);
+      beginEmployeeTracker();
     });
   // let query = "INSERT ?"
 };
