@@ -37,28 +37,28 @@ const mySqlConnect = mysql.createConnection({
 // this just creates the connection to the server so that it is open while the program is running
 // TODO: add function to add departments/titles/managers to list
 let departmentsArr = [
-  "Engineering",
-  "Sales",
-  "Human Resources",
-  "Marketing",
-  "Security",
-  "Support",
-  "Management",
+  "Engineering ",
+  "Sales ",
+  "Human Resources ",
+  "Marketing ",
+  "Security ",
+  "Support ",
+  "Management ",
 ];
 let titlesArr = [
-  "Engineer",
-  "Sales Person",
-  "Market Researcher",
-  "Security Guard",
-  "Personnel",
-  "Manager",
+  "Engineer ",
+  "Sales Person ",
+  "Market Researcher ",
+  "Security Guard ",
+  "Personnel ",
+  "Manager ",
 ];
 let managersArr = [
-  "Dave Cat",
-  "Kelly Kapoor",
-  "Andrea Gourmand",
-  "Xernona Petri",
-  "Cintra Goss",
+  "Dave Cat ",
+  "Kelly Kapoor ",
+  "Andrea Gourmand ",
+  "Xernona Petri ",
+  "Cintra Goss ",
 ];
 mySqlConnect.connect((err) => {
   if (err) {
@@ -88,6 +88,7 @@ let beginEmployeeTracker = () => {
           new inquirer.Separator(),
           "Configure Titles",
           "Configure Departments",
+          "Configure Managers (Does not alter table data)",
         ],
       },
     ])
@@ -105,6 +106,8 @@ let beginEmployeeTracker = () => {
         configTitles();
       } else if (answers.start == "Configure Departments") {
         configDepartments();
+      } else if (answers.start == "Configure Managers") {
+        configManagers();
       }
     })
     .catch((error) => {
@@ -185,4 +188,29 @@ let configDepartments = () => {
       }
     });
   //   beginEmployeeTracker();
+};
+
+let configTitles = () => {
+  inquirer
+    .prompt([
+      {
+        name: "addTitle",
+        type: "input",
+        message:
+          "Enter the name of a new Title. (Type menu to return to main menu. Type clear to clear departments)",
+      },
+    ])
+    .then((answer) => {
+      if (answer.addTitle == "menu") {
+        beginEmployeeTracker();
+      } else if (answer.addTitle == "clear") {
+        titlesArr = [];
+        console.log("Titles Cleared");
+        configTitles();
+      } else {
+        titlesArr.push(answer.addTitle);
+        console.log(`Titles: ${titlesArr}`);
+        configTitles();
+      }
+    });
 };
