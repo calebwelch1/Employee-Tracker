@@ -82,6 +82,7 @@ let beginEmployeeTracker = () => {
         message: "What do you want to do?",
         choices: [
           "View Employees",
+          "View Employees Sort",
           "Add An Employee",
           "Remove An Employee",
           "Update An Employee",
@@ -111,6 +112,8 @@ let beginEmployeeTracker = () => {
         answers.start == "Configure Managers (Does not alter table data)"
       ) {
         configManagers();
+      } else if (answers.start == "View Employees Sort") {
+        employeeSort();
       }
     })
     .catch((error) => {
@@ -283,6 +286,51 @@ let configManagers = () => {
         managersArr.push(answer.addManager);
         console.log(`Titles: ${managersArr}`);
         configManagers();
+      }
+    });
+};
+// sort employees by different groups
+let employeeSort = () => {
+  // manager sort
+  let managerSort = () => {
+    let query =
+      "SELECT id, first_name, last_name, title, department, salary, manager FROM employees ORDER BY Manager DESC";
+    mySqlConnect.query(query, (err, res) => {
+      if (err) {
+        throw err;
+      }
+      console.table(
+        [
+          "id",
+          "first_name",
+          "last_name",
+          "title",
+          "department",
+          "salary",
+          "manager",
+        ],
+        res
+      );
+    });
+    beginEmployeeTracker();
+  };
+  //TODO: salarySort, DepartmentSort()
+  inquirer
+    .prompt([
+      {
+        name: "sort",
+        type: "list",
+        message: "How would you like to sort employees?",
+        choices: ["By Manager", "By Salary", "By Department"],
+      },
+    ])
+    .then((answer) => {
+      if (answer.sort == "By Manager") {
+        managerSort();
+      } else if (answer.sort == "By Salary") {
+        salarySort();
+      } else if (answer.sort == "By Department") {
+        departmentSort();
       }
     });
 };
