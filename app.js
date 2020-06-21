@@ -6,6 +6,7 @@ const app = express();
 require("dotenv").config();
 const PORT = 8080;
 const cTable = require("console.table");
+// const employeeSort = require("./Sort"); can't get exports to work properly
 // call once somewhere in the beginning of the app
 //takes an object use this later to print out employees
 // console.table([
@@ -35,7 +36,6 @@ const mySqlConnect = mysql.createConnection({
   database: process.env.DB_NAME,
 });
 // this just creates the connection to the server so that it is open while the program is running
-// TODO: add function to add departments/titles/managers to list
 let departmentsArr = [
   "Engineering ",
   "Sales ",
@@ -190,7 +190,10 @@ let addEmployees = () => {
     ])
     .then((answer) => {
       let salary = parseInt(answer.addESalary);
-      let query = `INSERT INTO employees (first_name, last_name, title, department, salary, manager) VALUES (${answer.addEFname}, ${answer.addELname}, ${answer.addETitle}, ${answer.addDepartment}, ${salary}, ${answer.addEManager})`;
+      // didn't work until I added quotes around the answers!!!
+      let query = `INSERT INTO employees (first_name, last_name, title, department, salary, manager) VALUES ("${answer.addEFname}", "${answer.addELname}", "${answer.addETitle}", "${answer.addDepartment}", ${salary}, "${answer.addEManager}")`;
+      // let query =
+      //   "INSERT INTO employees (first_name, last_name, title, department, salary, manager) VALUES(Bob, Saget, Comedian, Funny, 100000, Dave Cat)";
       mySqlConnect.query(
         query,
         // can't get ? to work... maybe i need many ?'s
@@ -360,7 +363,6 @@ let employeeSort = () => {
     });
     beginEmployeeTracker();
   };
-  //TODO: salarySort, DepartmentSort()
   inquirer
     .prompt([
       {
