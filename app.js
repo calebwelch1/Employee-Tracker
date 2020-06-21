@@ -314,6 +314,52 @@ let employeeSort = () => {
     });
     beginEmployeeTracker();
   };
+  // salarySort
+  let salarySort = () => {
+    let query =
+      "SELECT id, first_name, last_name, title, department, salary, manager FROM employees ORDER BY Salary DESC";
+    mySqlConnect.query(query, (err, res) => {
+      if (err) {
+        throw err;
+      }
+      console.table(
+        [
+          "id",
+          "first_name",
+          "last_name",
+          "title",
+          "department",
+          "salary",
+          "manager",
+        ],
+        res
+      );
+    });
+    beginEmployeeTracker();
+  };
+  // DepartmentSort()
+  let departmentSort = () => {
+    let query =
+      "SELECT id, first_name, last_name, title, department, salary, manager FROM employees ORDER BY Department DESC";
+    mySqlConnect.query(query, (err, res) => {
+      if (err) {
+        throw err;
+      }
+      console.table(
+        [
+          "id",
+          "first_name",
+          "last_name",
+          "title",
+          "department",
+          "salary",
+          "manager",
+        ],
+        res
+      );
+    });
+    beginEmployeeTracker();
+  };
   //TODO: salarySort, DepartmentSort()
   inquirer
     .prompt([
