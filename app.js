@@ -298,7 +298,7 @@ let configTitles = () => {
         name: "addTitle",
         type: "input",
         message:
-          "Enter the name of a new Title. (Type menu to return to main menu. Type clear to clear departments)",
+          "Enter the name of a new Title. (Type menu to return to main menu. Type clear to clear Titles)",
       },
     ])
     .then((answer) => {
@@ -323,7 +323,7 @@ let configManagers = () => {
         name: "addManager",
         type: "input",
         message:
-          "Enter the name of a new Manager. (Type menu to return to main menu. Type clear to clear departments)",
+          "Enter the name of a new Manager. (Type menu to return to main menu. Type clear to clear Managers)",
       },
     ])
     .then((answer) => {
