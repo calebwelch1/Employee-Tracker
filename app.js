@@ -150,7 +150,7 @@ let viewEmployees = () => {
     // console.log(res);
   });
 };
-
+// add
 let addEmployees = () => {
   inquirer
     .prompt([
@@ -216,7 +216,55 @@ let addEmployees = () => {
     });
   // let query = "INSERT ?"
 };
-
+// remove employee
+let removeEmployee = () => {
+  inquirer
+    .prompt({
+      name: "remove",
+      type: "input",
+      message: "Enter ID of employee you would like to remove",
+    })
+    .then((answer) => {
+      let ID = parseInt(answer.remove);
+      let query = `DELETE FROM employees WHERE ID =${ID}`;
+      mySqlConnect.query(query, (err) => {
+        if (err) {
+          throw err;
+        }
+      });
+      beginEmployeeTracker();
+    });
+};
+//update employee
+// can't get when prompt to work properly will fix later
+let updateEmployee = () => {
+  inquirer
+    .prompt(
+      {
+        name: "UEID",
+        type: "input",
+        message: "Input ID of employee you would like to update",
+      },
+      {
+        name: "UEType",
+        type: "list",
+        message: "Choose Data type to update",
+        choices: ["Title", "Salary", "Department", "Manager"],
+      },
+      {
+        name: "UETitle",
+        type: "list",
+        message: "Choose a new title for the employee",
+        choices: titlesArr,
+        when: (answers) => {
+          answers.UEType == "Title";
+        },
+      }
+    )
+    .then((answer) => {
+      console.log(answer);
+    });
+};
 let configDepartments = () => {
   inquirer
     .prompt([
